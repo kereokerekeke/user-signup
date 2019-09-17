@@ -19,9 +19,8 @@ def check_validity(type, string):
     if (string != ''):
         if (' ' in string) or (3 > len(string) or len(string) > 21):
             error = True
-        if type == 'Email':
-            if (string.count('@') != 1) or (string.count('.') != 1):
-                error = True
+        if type == 'Email' and ((string.count('@') != 1) or (string.count('.') != 1)):
+            error = True
     elif type != 'Email':
         error = True
     
@@ -48,19 +47,12 @@ def signup():
         verify = request.form['verify']
         email = request.form['email']
         
-        # if (username == '') or (' ' in username) or (3 > len(username) or len(username) > 21):
-        #     username_error = 'Username can not be empty or contain spaces or be less than 3 or more than 20 characters' 
-            
         username_error = check_validity('Username', username)
         password_error = check_validity('Password', password)
             
         if verify != password:
             verify_error = 'Passwords do not match'
-            
-        # if email != '':
-        #     if (' ' in email) or (3 > len(email) or len(email) > 21) or (email.count('@') > 1) or (email.count('.') > 1):
-        #         email_error = 'Email is invalid'
-        
+
         email_error = check_validity('Email', email)
         
         if not username_error and not password_error and not verify_error and not email_error:
