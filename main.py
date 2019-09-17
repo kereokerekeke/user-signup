@@ -2,6 +2,7 @@ from flask import Flask, request, redirect
 import os
 import jinja2
 
+
 app = Flask(__name__)
 app.config['DEBUG'] = True
 
