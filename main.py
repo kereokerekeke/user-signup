@@ -1,15 +1,7 @@
-from flask import Flask, request, redirect
-import os
-import jinja2
-
+from flask import Flask, request, redirect, render_template
 
 app = Flask(__name__)
 app.config['DEBUG'] = True
-
-template_dir = os.path.join(os.path.dirname(__file__),
-                            'templates')
-
-jinja_env = jinja2.Environment(loader=jinja2.FileSystemLoader(template_dir))
 
 
 def check_validity(type, string):
@@ -32,7 +24,6 @@ def check_validity(type, string):
 
 @app.route('/', methods=['GET', 'POST'])
 def signup():
-    template = jinja_env.get_template('signup.html')
     
     username_error = ''
     password_error = ''
@@ -58,7 +49,8 @@ def signup():
         if not username_error and not password_error and not verify_error and not email_error:
             return redirect('/welcome?username={username}'.format(username=username))
 
-    return template.render(title='Signup',
+    return render_template('signup.html',
+                           title='Signup',
                            username_error=username_error,
                            email_error=email_error,
                            password_error=password_error,
@@ -69,9 +61,9 @@ def signup():
 
 @app.route('/welcome')
 def welcome():
-    template = jinja_env.get_template('welcome.html')
     username = request.args.get('username')
-    return template.render(username=username)
+    return render_template('welcome.html',
+                           username=username)
     
 
 app.run()
